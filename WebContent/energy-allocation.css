@@ -1,0 +1,45 @@
+@CHARSET "UTF-8";
+
+td {
+	border: 1px solid #cccccc;
+	padding: 4px;
+}
+
+.turn {
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.power {
+	color: #009900;
+}
+
+.power-label-header {
+	font-weight: bold;
+}
+
+.power-label-header, .power-label-text {
+	text-transform: uppercase;
+	width: 200px;
+}
+
+.power-label-expression, .power-item-expression {
+	font-weight: bold;
+}
+
+.power-label-expression.power {
+	background-color: #009900;
+	color: #ffffff;
+}
+
+.power-item {
+	text-align: center;	
+	width: 60px;	
+}
+
+.power-item-text, .power-item-expression {
+	padding: 4px;
+	text-align: center;	
+	width: 50px;	
+}

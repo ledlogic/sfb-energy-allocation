@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Energy Allocation</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.4/css/bulma.min.css">
+<link rel="stylesheet" href="energy-allocation.css">
+</head>
+<body>
+<div class="columns" id="app">
+	<div class="column">
+		<section class="section">
+			<section class="form">
+				<table id="energyallocation">
+					<tr>
+						<td class=power-label-header>Energy</td>
+						<td class="turn" v-for="turn in displayturns">{{ turn }}</td>
+					</tr>
+					<tr v-for="(row, powerIndex) in powers">
+	    				<td :class="powerlabelclass(row)">{{ row.name }}</td>
+	    				<td class="power-item" v-for="turn in turns">
+							<div v-if="row.expression">
+	    						<span :class="poweritemclass(row)">{{calculatepower(powerIndex, turn)}}</span>		
+							</div>
+							<div v-else>
+	    						<input :class="poweritemclass(row)" type="number" :tabindex="tabindex(powerIndex, turn)" v-model="row.turns[turn]" min="0" />		
+							</div>
+						</td>
+	  				</tr>
+				</table>
+			</section>
+     	</section>
+	</div>
+</div>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
+
+<script>
+function emptyTurns() {
+	var arr = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+	return arr;
+}
+new Vue({
+  el: '#energyallocation',
+  data: {
+	displayturns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
+	turns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+	powers:[
+    {
+    	type: "POWER",
+    	key: "WARP",
+    	name: "WARP ENGINE POWER",
+    	turns: emptyTurns()
+    },
+    {
+    	type: "POWER",
+   		key: "IMPL",
+    	name: "IMPULSE ENGINE POWER",
+    	turns: emptyTurns()
+    },
+    {
+    	type: "POWER",
+    	key: "RCTR",
+    	name: "REACTOR POWER",
+    	turns: emptyTurns()
+    },
+    {
+    	type: "POWER",
+   		key: "TOTAL_POWER",
+    	name: "TOTAL POWER AVAILABLE",
+    	expression: "WARP+IMPL+RCTR"
+    }]
+  },
+  methods: {
+	calculatepower: function(i, turn) {
+		var power = this.$data.powers[i];
+		var expression = power.expression;
+		var newexpression = expression;
+		var regexp = /([\w]+)/gm;
+		var match = null;
+		while (match = regexp.exec(expression)) {
+			var key = match[0];
+			var value = this.eval(key, turn);
+			newexpression = newexpression.replace(key, value);
+		}
+		var ret = eval(newexpression);
+		console.log("calculatepower; newexpression=" + newexpression + ";ret=" + ret);
+		return ret;
+	},
+	eval: function(key, turn) {
+		for (var i=0;i<this.$data.powers.length;i++) {
+			var power = this.$data.powers[i];
+			if (key === power.key) {
+				var val = power.turns[turn];
+				console.log("key=" + key + "; turn=" + turn + "; val=" + val)
+				return val;
+			}
+		}
+		return 0;
+	},
+	powerlabelclass: function (row) {
+		var ret = "";
+		ret += " " + ((typeof(row.expression) != "undefined") ? "power-label-expression" : "power-label-text");
+		ret += (typeof(row.type) != "undefined") ? " " + row.type.toLowerCase() : "";
+		return ret;
+	},
+	poweritemclass: function(row) {
+		var ret = "";
+		ret += " " + ((typeof(row.expression) != "undefined") ? "power-item-expression" : "power-item-text");
+		ret += (typeof(row.type) != "undefined") ? " " + row.type.toLowerCase() : "";
+		return ret;
+	},
+	tabindex: function (i, turn) {
+		return (10+i) + (200*turn);
+	}
+  }
+})
+</script>
+
+</body>
+</html>
