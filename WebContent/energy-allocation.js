@@ -243,16 +243,16 @@ new Vue({
 		while (match = regexp.exec(expression)) {
 			var key = match[0];
 			var value = this.eval(key, turn);
-			console.log("calculatepower; key=" + key + ", value=" + value);
+			//console.log("calculatepower; key=" + key + ", value=" + value);
 			newexpression = newexpression.replace(key, value);
 		}
-		console.log("calculatepower; newexpression=" + newexpression);
+		//console.log("calculatepower; newexpression=" + newexpression);
 		var ret = eval(newexpression);
-		console.log("calculatepower; newexpression=" + newexpression + ";ret=" + ret);
+		//console.log("calculatepower; newexpression=" + newexpression + ";ret=" + ret);
 		return ret;
 	},
 	eval: function(key, turn) {
-		console.log("eval; key=" + key + ";turn=" + turn);
+		//console.log("eval; key=" + key + ";turn=" + turn);
 		var colonIndex = key.indexOf(":");
 		var typekey = null;
 		if (colonIndex > -1) {
@@ -264,10 +264,11 @@ new Vue({
 			var power = this.$data.powers[i];
 			if (key && (key === power.key)) {
 				val += parseInt(power.turns[turn],10);
-				console.log("key=" + key + "; turn=" + turn + "; val=" + val);
+				return val;
+				//console.log("key=" + key + "; turn=" + turn + "; val=" + val);
 			} else if (typekey && (typekey === power.type)) {
 				val += parseInt(power.turns[turn], 10);
-				console.log("key=" + key + "; turn=" + turn + "; val=" + val);
+				//console.log("key=" + key + "; turn=" + turn + "; val=" + val);
 			}
 		}
 		return val;
