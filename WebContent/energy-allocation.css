@@ -15,6 +15,26 @@ td {
 	color: #009900;
 }
 
+.battery {
+	color: #000099;
+}
+
+.system {
+	color: #990000;
+}
+
+.weapon {
+	color: #FF8C00;
+}
+
+.defense {
+	color: #009999;
+}
+
+.movement {
+	color: #A0522D;
+}
+
 .power-label-header {
 	font-weight: bold;
 }
@@ -41,5 +61,6 @@ td {
 .power-item-text, .power-item-expression {
 	padding: 4px;
 	text-align: center;	
-	width: 50px;	
+	width: 100%;
+	border: 1px solid transparent;
 }
